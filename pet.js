@@ -5,7 +5,7 @@
 (() => {
     // ── State ──
     const petState = {
-        hunger: 80,
+        hunger: 30, // Empieza con hambre (estaba en 80)
         happy: 80,
         energy: 80,
         animation: 'idle', // idle | walk | sit | sleep | eat | play | pet | jump
@@ -203,7 +203,8 @@
         todoList.addEventListener('click', (e) => {
             if (e.target.matches('.todo-checkbox')) {
                 if (e.target.checked) {
-                    doAction('jump', '¡Buen trabajo!', 2000, { ha: 15, e: -5, h: -5 });
+                    // Al completar tarea, el perro come y se llena
+                    doAction('eat', '¡Qué rico! ¡Gracias!', 2500, { h: 25, ha: 10, e: 5 });
                     widget.classList.add('shake');
                     setTimeout(() => widget.classList.remove('shake'), 400);
                 } else {
@@ -243,9 +244,9 @@
             petState.frame++;
             render();
             
-            // Passive drain (slowed down for widget)
-            if (!petState.busy && petState.frame % 20 === 0) {
-                petState.hunger -= 1;
+            // Passive drain (slowed down for widget, but hunger drains faster now)
+            if (!petState.busy && petState.frame % 15 === 0) {
+                petState.hunger -= 1.5;
                 petState.happy -= 0.5;
                 petState.energy -= 0.5;
                 updateUI();

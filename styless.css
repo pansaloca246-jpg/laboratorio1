@@ -425,7 +425,7 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 200px;
+    width: 260px; /* Aumentado de 200px a 260px */
     z-index: 900;
     border-radius: 12px;
     overflow: hidden;
@@ -481,7 +481,7 @@ body {
 .pet-widget-body {
     overflow: hidden;
     transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s;
-    max-height: 300px;
+    max-height: 400px; /* Aumentado para acomodar escenario más grande */
     opacity: 1;
 }
 
@@ -493,7 +493,7 @@ body {
 /* Pet stage */
 .pet-stage {
     position: relative;
-    height: 110px;
+    height: 150px; /* Aumentado de 110px a 150px */
     background: linear-gradient(180deg, #0f3460 0%, #16213e 55%, #1a472a 80%, #2d6a4f 100%);
     overflow: hidden;
     cursor: pointer;
@@ -508,8 +508,8 @@ body {
 
 .pet-stage canvas {
     image-rendering: pixelated;
-    width: 96px;
-    height: 96px;
+    width: 128px; /* Aumentado de 96px a 128px */
+    height: 128px;
     position: relative;
     z-index: 2;
     margin-bottom: 12px;
