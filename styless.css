@@ -19,14 +19,22 @@
     /* Transiciones */
     --transition-normal: 0.2s ease;
     
-    /* Prioridades */
-    --priority-baja: #10b981;
-    --priority-baja-bg: #d1fae5;
-    --priority-media: #f59e0b;
-    --priority-media-bg: #fef3c7;
-    --priority-alta: #ef4444;
-    --priority-alta-bg: #fee2e2;
+/* Dark theme overrides */
+[data-theme="dark"] {
+    --bg-color: #1a202c;
+    --surface-color: #2d3748;
+    --text-primary: #f7fafc;
+    --text-secondary: #a0aec0;
+    --primary-color: #63b3ed;
+    --primary-hover: #4299e1;
+    --border-color: #4a5568;
 }
+
+/* Smooth transition for theme change */
+html, body {
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
 
 * {
     box-sizing: border-box;
@@ -256,6 +264,24 @@ body {
 .badge-alta {
     background-color: var(--priority-alta-bg);
     color: var(--priority-alta);
+}
+
+/* Premium card (glassmorphism) */
+.premium-card {
+    background: rgba(255,255,255,0.15);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* Priority menu hidden */
+.priority-menu.hidden {
+    display: none;
 }
 
 /* Ocultar elementos para el filtro */

@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Estado local sincronizado con localStorage
     let tasks = JSON.parse(localStorage.getItem('todo_tasks')) || [];
+
     let currentFilter = 'todas';
     let selectedPriority = 'media';
-    let currentFilter = 'todas';
 
     // Funciones de utilidad
     const saveTasks = () => {
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event Listeners
     // Theme toggle
     const applyTheme = (theme) => {
-        document.documentElement.dataset.theme = theme;
+        document.body.dataset.theme = theme; // set on body (which is :root for CSS vars)
         themeToggle.checked = theme === 'dark';
     };
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -123,7 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
     priorityMenu.addEventListener('click', (e) => {
         if (e.target.matches('.priority-option')) {
             selectedPriority = e.target.dataset.value;
-            priorityBtn.textContent = e.target.textContent.trim();
+            // Update the label text inside the button while keeping the icon
+            const labelSpan = priorityBtn.querySelector('.priority-label');
+            if (labelSpan) {
+                labelSpan.textContent = e.target.textContent.trim();
+            }
             priorityMenu.classList.add('hidden');
         }
     });
