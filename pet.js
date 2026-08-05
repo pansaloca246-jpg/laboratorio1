@@ -5,7 +5,7 @@
 (() => {
     // ── State ──
     const petState = {
-        hunger: 30, // Empieza con hambre (estaba en 80)
+        hunger: 100, // Empieza lleno
         happy: 80,
         energy: 80,
         animation: 'idle', // idle | walk | sit | sleep | eat | play | pet | jump
@@ -184,8 +184,8 @@
     const listObserver = new MutationObserver((mutations) => {
         for (const m of mutations) {
             if (m.addedNodes.length > 0) {
-                // Task added
-                doAction('jump', '¡Nueva tarea! ¡Guau!', 2000, { ha: 10, e: -5 });
+                // Task added (baja el hambre porque hay más trabajo)
+                doAction('jump', '¡Nueva tarea! ¡Guau!', 2000, { ha: 10, e: -5, h: -20 });
                 widget.classList.add('celebrate');
                 setTimeout(() => widget.classList.remove('celebrate'), 600);
             }
@@ -244,9 +244,8 @@
             petState.frame++;
             render();
             
-            // Passive drain (slowed down for widget, but hunger drains faster now)
+            // Passive drain (slowed down for widget, hunger does NOT drain automatically anymore)
             if (!petState.busy && petState.frame % 15 === 0) {
-                petState.hunger -= 1.5;
                 petState.happy -= 0.5;
                 petState.energy -= 0.5;
                 updateUI();
