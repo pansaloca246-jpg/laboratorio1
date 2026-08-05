@@ -417,3 +417,221 @@ body {
 .modal-btn-confirm:active {
     transform: translateY(0);
 }
+
+/* ═══════════════════════════════════════════════
+   PIXEL PET WIDGET
+   ═══════════════════════════════════════════════ */
+.pet-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    z-index: 900;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 0 0 2px var(--primary-color);
+    transition: box-shadow 0.3s;
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+}
+
+.pet-widget:hover {
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.35),
+        0 0 16px rgba(99, 179, 237, 0.25),
+        0 0 0 2px var(--primary-color);
+}
+
+.pet-widget-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.pet-widget-header:hover {
+    filter: brightness(1.1);
+}
+
+.pet-widget-title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pet-widget-mood {
+    font-size: 14px;
+    animation: petBounce 2s ease-in-out infinite;
+}
+
+@keyframes petBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+.pet-widget-body {
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s;
+    max-height: 300px;
+    opacity: 1;
+}
+
+.pet-widget-body.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* Pet stage */
+.pet-stage {
+    position: relative;
+    height: 110px;
+    background: linear-gradient(180deg, #0f3460 0%, #16213e 55%, #1a472a 80%, #2d6a4f 100%);
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+[data-theme="dark"] .pet-stage {
+    background: linear-gradient(180deg, #0a0e1a 0%, #111827 55%, #14331f 80%, #1a472a 100%);
+}
+
+.pet-stage canvas {
+    image-rendering: pixelated;
+    width: 96px;
+    height: 96px;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 12px;
+}
+
+.pet-ground {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 16px;
+    background: repeating-linear-gradient(90deg,
+        #2d6a4f 0px, #2d6a4f 6px,
+        #1a472a 6px, #1a472a 12px
+    );
+    border-top: 2px solid #52b788;
+}
+
+/* Pet stats */
+.pet-stats {
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.pet-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pet-stat-icon {
+    font-size: 10px;
+    flex-shrink: 0;
+    width: 16px;
+    text-align: center;
+}
+
+.pet-stat-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.pet-stat-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    width: 80%;
+}
+
+.pet-stat-fill.pet-hunger { background: linear-gradient(90deg, #10b981, #34d399); }
+.pet-stat-fill.pet-happy  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.pet-stat-fill.pet-energy { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+
+.pet-stat-fill.critical {
+    animation: criticalPulse 0.6s infinite;
+}
+
+@keyframes criticalPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Speech bubble */
+.pet-speech {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    padding: 6px 12px;
+    text-align: center;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.pet-speech.visible {
+    opacity: 1;
+}
+
+/* Love popup in stage */
+.pet-love-popup {
+    position: absolute;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 10;
+    animation: petLoveFloat 0.8s ease-out forwards;
+}
+
+@keyframes petLoveFloat {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
+}
+
+/* Widget shake animation */
+.pet-widget.shake {
+    animation: petShake 0.4s ease;
+}
+
+@keyframes petShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px) rotate(-1deg); }
+    75% { transform: translateX(4px) rotate(1deg); }
+}
+
+/* Widget celebrate animation */
+.pet-widget.celebrate {
+    animation: petCelebrate 0.6s ease;
+}
+
+@keyframes petCelebrate {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.08); }
+    60%  { transform: scale(0.96); }
+    100% { transform: scale(1); }
+}

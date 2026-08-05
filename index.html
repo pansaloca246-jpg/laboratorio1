@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="styless.css">
     <!-- Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Pixel font for pet -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body data-theme="light">
     <main class="premium-card">
@@ -71,6 +73,35 @@
         </div>
     </main>
 
+    <!-- ═══ Pixel Pet Widget ═══ -->
+    <div id="pet-widget" class="pet-widget">
+        <div class="pet-widget-header" id="pet-widget-toggle">
+            <span class="pet-widget-title">🐕 Pixel Pup</span>
+            <span class="pet-widget-mood" id="pet-mood-icon">😊</span>
+        </div>
+        <div class="pet-widget-body" id="pet-widget-body">
+            <div class="pet-stage" id="pet-stage">
+                <canvas id="pet-canvas" width="64" height="64"></canvas>
+                <div class="pet-ground"></div>
+            </div>
+            <div class="pet-stats">
+                <div class="pet-stat-row">
+                    <span class="pet-stat-icon">🍖</span>
+                    <div class="pet-stat-track"><div class="pet-stat-fill pet-hunger" id="pet-hunger"></div></div>
+                </div>
+                <div class="pet-stat-row">
+                    <span class="pet-stat-icon">💛</span>
+                    <div class="pet-stat-track"><div class="pet-stat-fill pet-happy" id="pet-happy"></div></div>
+                </div>
+                <div class="pet-stat-row">
+                    <span class="pet-stat-icon">⚡</span>
+                    <div class="pet-stat-track"><div class="pet-stat-fill pet-energy" id="pet-energy"></div></div>
+                </div>
+            </div>
+            <div class="pet-speech" id="pet-speech"></div>
+        </div>
+    </div>
+
     <!-- Custom Edit Modal -->
     <div id="edit-modal-overlay" class="modal-overlay hidden">
         <div class="modal-card">
@@ -93,5 +124,6 @@
     </div>
 
     <script src="app.js"></script>
+    <script src="pet.js"></script>
 </body>
 </html>
