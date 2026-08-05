@@ -19,6 +19,14 @@
     /* Transiciones */
     --transition-normal: 0.2s ease;
     
+    /* Prioridades */
+    --priority-baja: #10b981;
+    --priority-baja-bg: #d1fae5;
+    --priority-media: #f59e0b;
+    --priority-media-bg: #fef3c7;
+    --priority-alta: #ef4444;
+    --priority-alta-bg: #fee2e2;
+}    
 /* Dark theme overrides */
 [data-theme="dark"] {
     --bg-color: #0f1115; /* Deep charcoal */
@@ -28,6 +36,11 @@
     --primary-color: #3b82f6;
     --primary-hover: #60a5fa;
     --border-color: rgba(255, 255, 255, 0.1);
+    
+    /* Prioridades dark mode */
+    --priority-baja-bg: rgba(16, 185, 129, 0.2);
+    --priority-media-bg: rgba(245, 158, 11, 0.2);
+    --priority-alta-bg: rgba(239, 68, 68, 0.2);
 }
 
 /* Smooth transition for theme change */
