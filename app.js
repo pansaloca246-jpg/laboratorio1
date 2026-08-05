@@ -3,11 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('todo-form');
     const input = document.getElementById('todo-input');
     const list = document.getElementById('todo-list');
-    const prioritySelect = document.getElementById('todo-priority');
+    const priorityBtn = document.getElementById('priority-btn');
+    const priorityMenu = document.getElementById('priority-menu');
+    const themeToggle = document.getElementById('theme-toggle');
+    const taskCounter = document.getElementById('task-counter');
     const filtersContainer = document.getElementById('filters-container');
 
     // Estado local sincronizado con localStorage
     let tasks = JSON.parse(localStorage.getItem('todo_tasks')) || [];
+    let currentFilter = 'todas';
+    let selectedPriority = 'media';
     let currentFilter = 'todas';
 
     // Funciones de utilidad
@@ -45,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="todo-text">${escapeHTML(task.text)}</span>
                 <span class="todo-badge badge-${priority}">${priority}</span>
             </label>
+            <button class="btn-edit" aria-label="Editar tarea">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
             <button class="btn-delete" aria-label="Eliminar tarea">
                 ${createDeleteIcon()}
             </button>
@@ -64,11 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
             id: Date.now().toString(),
             text: text,
             completed: false,
-            priority: prioritySelect.value
+            priority: selectedPriority
         };
         tasks.push(newTask);
         saveTasks();
         renderTask(newTask);
+        updateTaskCounter();
     };
 
     const toggleTask = (id, liElement) => {
@@ -89,18 +98,47 @@ document.addEventListener('DOMContentLoaded', () => {
             tasks = tasks.filter(t => t.id !== id);
             saveTasks();
             liElement.remove();
+            updateTaskCounter();
         }, { once: true });
     };
 
     // Event Listeners
+    // Theme toggle
+    const applyTheme = (theme) => {
+        document.documentElement.dataset.theme = theme;
+        themeToggle.checked = theme === 'dark';
+    };
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+    themeToggle.addEventListener('change', () => {
+        const newTheme = themeToggle.checked ? 'dark' : 'light';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    // Priority button & menu
+    priorityBtn.addEventListener('click', () => {
+        priorityMenu.classList.toggle('hidden');
+    });
+    priorityMenu.addEventListener('click', (e) => {
+        if (e.target.matches('.priority-option')) {
+            selectedPriority = e.target.dataset.value;
+            priorityBtn.textContent = e.target.textContent.trim();
+            priorityMenu.classList.add('hidden');
+        }
+    });
+
+    const updateTaskCounter = () => {
+        taskCounter.textContent = `Tareas Totales: ${tasks.length}`;
+    };
+    updateTaskCounter();
+
     if (filtersContainer) {
         filtersContainer.addEventListener('click', (e) => {
             if (e.target.matches('.filter-btn')) {
                 document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
-                
                 currentFilter = e.target.dataset.filter;
-                
                 const items = list.querySelectorAll('.todo-item');
                 items.forEach(item => {
                     const taskPriority = item.dataset.priority;
@@ -130,14 +168,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!li) return;
 
         const id = li.dataset.id;
+        const task = tasks.find(t => t.id === id);
 
         if (e.target.matches('.todo-checkbox')) {
             toggleTask(id, li);
         } else if (e.target.closest('.btn-delete')) {
             deleteTask(id, li);
+        } else if (e.target.closest('.btn-edit')) {
+            // Placeholder for edit functionality
+            const newText = prompt('Editar tarea:', task.text);
+            if (newText !== null) {
+                task.text = newText.trim();
+                saveTasks();
+                renderAllTasks();
+            }
         }
     });
 
     // Inicialización
     renderAllTasks();
+    // Ensure counter reflects loaded tasks
+    updateTaskCounter();
 });

@@ -3,15 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Tareas</title>
+    <title>Lista de Tareas Premium</title>
     <link rel="stylesheet" href="styless.css">
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <main class="app-container">
-        <header class="app-header">
-            <h1>Mis Tareas</h1>
+<body data-theme="light">
+    <main class="premium-card">
+        <header class="premium-header">
+            <h1 class="title">
+                <svg class="icon-check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Mis Tareas
+            </h1>
+            <div class="header-controls">
+                <span id="task-counter" class="task-counter">Tareas Totales: 0</span>
+                <div class="theme-switch">
+                    <input type="checkbox" id="theme-toggle" aria-label="Modo oscuro/claro" />
+                    <label for="theme-toggle" class="switch-label">
+                        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79C20.71 12.86 20.42 12.9 20.13 12.9C15.55 12.9 12 9.35 12 4.77C12 4.48 12.04 4.19 12.11 3.9C7.57 4.71 4 8.64 4 13.33C4 18.45 8.05 22.5 13.17 22.5C17.86 22.5 21.79 18.93 22.6 14.39C22.31 14.46 22.02 14.5 21.73 14.5C21.22 14.5 20.73 14.43 20.26 14.3C20.73 13.86 21.12 13.33 21.41 12.73C21.28 12.75 21.14 12.77 21 12.79Z" fill="currentColor"/>
+                        </svg>
+                    </label>
+                </div>
+            </div>
         </header>
-        
+        <nav class="filters-container" id="filters-container">
+            <button class="filter-btn active" data-filter="todas">Todas</button>
+            <button class="filter-btn" data-filter="baja">Baja</button>
+            <button class="filter-btn" data-filter="media">Media</button>
+            <button class="filter-btn" data-filter="alta">Alta</button>
+        </nav>
         <form id="todo-form" class="todo-form">
             <input 
                 type="text" 
@@ -22,12 +49,31 @@
                 required 
                 autocomplete="off"
             >
-            <select id="todo-priority" class="todo-priority" aria-label="Prioridad de la tarea">
-                <option value="baja">Baja</option>
-                <option value="media" selected>Media</option>
-                <option value="alta">Alta</option>
-            </select>
-            <button type="submit" class="btn-primary" aria-label="Agregar tarea">Agregar</button>
+            <button type="button" id="priority-btn" class="priority-btn" aria-label="Prioridad">
+                <svg class="icon-stack" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Media
+            </button>
+            <button type="submit" class="btn-primary" aria-label="Agregar tarea">
+                <svg class="icon-plus" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Agregar
+            </button>
+        </form>
+        <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
+        <!-- Priority menu (hidden) -->
+        <div id="priority-menu" class="priority-menu hidden">
+            <button class="priority-option" data-value="baja"><span class="badge-baja badge-dot"></span> Baja</button>
+            <button class="priority-option" data-value="media"><span class="badge-media badge-dot"></span> Media</button>
+            <button class="priority-option" data-value="alta"><span class="badge-alta badge-dot"></span> Alta</button>
+        </div>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
+
         </form>
 
         <div class="filters-container" id="filters-container">
