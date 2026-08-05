@@ -3,9 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('todo-form');
     const input = document.getElementById('todo-input');
     const list = document.getElementById('todo-list');
+    const prioritySelect = document.getElementById('todo-priority');
+    const filtersContainer = document.getElementById('filters-container');
 
     // Estado local sincronizado con localStorage
     let tasks = JSON.parse(localStorage.getItem('todo_tasks')) || [];
+    let currentFilter = 'todas';
 
     // Funciones de utilidad
     const saveTasks = () => {
@@ -27,13 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lógica de Renderizado
     const renderTask = (task) => {
         const li = document.createElement('li');
+        const priority = task.priority || 'media';
         li.className = `todo-item ${task.completed ? 'completed' : ''}`;
         li.dataset.id = task.id;
+        li.dataset.priority = priority;
+        
+        if (currentFilter !== 'todas' && currentFilter !== priority) {
+            li.classList.add('hidden');
+        }
 
         li.innerHTML = `
             <label class="todo-content">
                 <input type="checkbox" class="todo-checkbox" ${task.completed ? 'checked' : ''}>
                 <span class="todo-text">${escapeHTML(task.text)}</span>
+                <span class="todo-badge badge-${priority}">${priority}</span>
             </label>
             <button class="btn-delete" aria-label="Eliminar tarea">
                 ${createDeleteIcon()}
@@ -53,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const newTask = {
             id: Date.now().toString(),
             text: text,
-            completed: false
+            completed: false,
+            priority: prioritySelect.value
         };
         tasks.push(newTask);
         saveTasks();
@@ -82,6 +93,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Event Listeners
+    if (filtersContainer) {
+        filtersContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.filter-btn')) {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                currentFilter = e.target.dataset.filter;
+                
+                const items = list.querySelectorAll('.todo-item');
+                items.forEach(item => {
+                    const taskPriority = item.dataset.priority;
+                    if (currentFilter === 'todas' || currentFilter === taskPriority) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    }
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const text = input.value.trim();

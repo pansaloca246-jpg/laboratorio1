@@ -18,6 +18,14 @@
     
     /* Transiciones */
     --transition-normal: 0.2s ease;
+    
+    /* Prioridades */
+    --priority-baja: #10b981;
+    --priority-baja-bg: #d1fae5;
+    --priority-media: #f59e0b;
+    --priority-media-bg: #fef3c7;
+    --priority-alta: #ef4444;
+    --priority-alta-bg: #fee2e2;
 }
 
 * {
@@ -174,4 +182,83 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Selector de prioridad */
+.todo-priority {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.todo-priority:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Filtros */
+.filters-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.filter-btn:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background-color: var(--primary-color);
+    color: var(--surface-color);
+    border-color: var(--primary-color);
+}
+
+/* Badges de prioridad */
+.todo-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    margin-left: 0.75rem;
+    text-transform: uppercase;
+}
+
+.badge-baja {
+    background-color: var(--priority-baja-bg);
+    color: var(--priority-baja);
+}
+
+.badge-media {
+    background-color: var(--priority-media-bg);
+    color: var(--priority-media);
+}
+
+.badge-alta {
+    background-color: var(--priority-alta-bg);
+    color: var(--priority-alta);
+}
+
+/* Ocultar elementos para el filtro */
+.todo-item.hidden {
+    display: none !important;
 }
