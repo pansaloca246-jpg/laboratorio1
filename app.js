@@ -166,8 +166,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ── Custom Edit Modal Logic ──
+    const editOverlay = document.getElementById('edit-modal-overlay');
+    const editInput = document.getElementById('edit-modal-input');
+    const editConfirm = document.getElementById('edit-modal-confirm');
+    const editCancel = document.getElementById('edit-modal-cancel');
+
+    const openEditModal = (currentText) => {
+        return new Promise((resolve) => {
+            editInput.value = currentText;
+            editOverlay.classList.remove('hidden');
+
+            // Focus after animation
+            setTimeout(() => editInput.focus(), 80);
+
+            const cleanup = () => {
+                editOverlay.classList.add('hidden');
+                editConfirm.removeEventListener('click', onConfirm);
+                editCancel.removeEventListener('click', onCancel);
+                editInput.removeEventListener('keydown', onKey);
+                editOverlay.removeEventListener('click', onOverlay);
+            };
+
+            const onConfirm = () => { cleanup(); resolve(editInput.value.trim()); };
+            const onCancel = () => { cleanup(); resolve(null); };
+            const onKey = (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); onConfirm(); }
+                if (e.key === 'Escape') onCancel();
+            };
+            const onOverlay = (e) => {
+                if (e.target === editOverlay) onCancel();
+            };
+
+            editConfirm.addEventListener('click', onConfirm);
+            editCancel.addEventListener('click', onCancel);
+            editInput.addEventListener('keydown', onKey);
+            editOverlay.addEventListener('click', onOverlay);
+        });
+    };
+
     // Delegación de eventos para la lista
-    list.addEventListener('click', (e) => {
+    list.addEventListener('click', async (e) => {
         const li = e.target.closest('.todo-item');
         if (!li) return;
 
@@ -179,10 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (e.target.closest('.btn-delete')) {
             deleteTask(id, li);
         } else if (e.target.closest('.btn-edit')) {
-            // Placeholder for edit functionality
-            const newText = prompt('Editar tarea:', task.text);
-            if (newText !== null) {
-                task.text = newText.trim();
+            const newText = await openEditModal(task.text);
+            if (newText !== null && newText.length > 0) {
+                task.text = newText;
                 saveTasks();
                 renderAllTasks();
             }
