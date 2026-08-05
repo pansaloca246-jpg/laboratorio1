@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lista de Tareas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>hola</h1>
+    <main class="app-container">
+        <header class="app-header">
+            <h1>Mis Tareas</h1>
+        </header>
+        
+        <form id="todo-form" class="todo-form">
+            <input 
+                type="text" 
+                id="todo-input" 
+                class="todo-input" 
+                placeholder="¿Qué necesitas hacer?" 
+                aria-label="Nueva tarea" 
+                required 
+                autocomplete="off"
+            >
+            <button type="submit" class="btn-primary" aria-label="Agregar tarea">Agregar</button>
+        </form>
+
+        <ul id="todo-list" class="todo-list" aria-live="polite">
+            <!-- Las tareas se renderizan aquí dinámicamente -->
+        </ul>
+    </main>
+
+    <script src="app.js"></script>
 </body>
 </html>
