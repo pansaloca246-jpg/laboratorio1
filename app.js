@@ -3,8 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('todo-form');
     const input = document.getElementById('todo-input');
     const list = document.getElementById('todo-list');
-    const priorityBtn = document.getElementById('priority-btn');
-    const priorityMenu = document.getElementById('priority-menu');
+    const prioritySelector = document.getElementById('priority-selector');
     const themeToggle = document.getElementById('theme-toggle');
     const taskCounter = document.getElementById('task-counter');
     const filtersContainer = document.getElementById('filters-container');
@@ -116,21 +115,19 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', newTheme);
     });
 
-    // Priority button & menu
-    priorityBtn.addEventListener('click', () => {
-        priorityMenu.classList.toggle('hidden');
-    });
-    priorityMenu.addEventListener('click', (e) => {
-        if (e.target.matches('.priority-option')) {
-            selectedPriority = e.target.dataset.value;
-            // Update the label text inside the button while keeping the icon
-            const labelSpan = priorityBtn.querySelector('.priority-label');
-            if (labelSpan) {
-                labelSpan.textContent = e.target.textContent.trim();
+    // Priority selector (inline dots)
+    if (prioritySelector) {
+        prioritySelector.addEventListener('click', (e) => {
+            if (e.target.matches('.priority-dot')) {
+                // Remove active from all dots
+                prioritySelector.querySelectorAll('.priority-dot').forEach(dot => dot.classList.remove('active'));
+                // Add active to clicked dot
+                e.target.classList.add('active');
+                // Update selected priority
+                selectedPriority = e.target.dataset.value;
             }
-            priorityMenu.classList.add('hidden');
-        }
-    });
+        });
+    }
 
     const updateTaskCounter = () => {
         taskCounter.textContent = `Tareas Totales: ${tasks.length}`;

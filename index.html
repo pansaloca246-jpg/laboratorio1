@@ -10,7 +10,9 @@
     <!-- Pixel font for pet -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
-<body data-theme="light">
+<body data-theme="dark">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
     <main class="premium-card">
         <header class="premium-header">
             <h1 class="title">
@@ -51,26 +53,19 @@
                 required 
                 autocomplete="off"
             >
-            <button type="button" id="priority-btn" class="priority-btn" aria-label="Prioridad">
-                <svg class="icon-stack" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                <span class="priority-label">Media</span>
-            </button>
+            <div class="priority-selector" id="priority-selector" aria-label="Seleccionar prioridad">
+                <button type="button" class="priority-dot dot-baja" data-value="baja" aria-label="Prioridad Baja" title="Baja"></button>
+                <button type="button" class="priority-dot dot-media active" data-value="media" aria-label="Prioridad Media" title="Media"></button>
+                <button type="button" class="priority-dot dot-alta" data-value="alta" aria-label="Prioridad Alta" title="Alta"></button>
+            </div>
             <button type="submit" class="btn-primary" aria-label="Agregar tarea">
                 <svg class="icon-plus" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                Agregar
+                <span>Agregar Tarea</span>
             </button>
         </form>
         <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
-        <!-- Priority menu (hidden) -->
-        <div id="priority-menu" class="priority-menu hidden">
-            <button class="priority-option" data-value="baja"><span class="badge-baja badge-dot"></span> Baja</button>
-            <button class="priority-option" data-value="media"><span class="badge-media badge-dot"></span> Media</button>
-            <button class="priority-option" data-value="alta"><span class="badge-alta badge-dot"></span> Alta</button>
-        </div>
     </main>
 
     <!-- ═══ Pixel Pet Widget ═══ -->
