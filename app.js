@@ -183,13 +183,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const btnDeleteAll = document.getElementById('btn-delete-all');
+    const deleteOverlay = document.getElementById('delete-modal-overlay');
+    const deleteConfirm = document.getElementById('delete-modal-confirm');
+    const deleteCancel = document.getElementById('delete-modal-cancel');
+
+    const openDeleteModal = () => {
+        return new Promise((resolve) => {
+            deleteOverlay.classList.remove('hidden');
+
+            const cleanup = () => {
+                deleteOverlay.classList.add('hidden');
+                deleteConfirm.removeEventListener('click', onConfirm);
+                deleteCancel.removeEventListener('click', onCancel);
+                deleteOverlay.removeEventListener('click', onOverlay);
+            };
+
+            const onConfirm = () => { cleanup(); resolve(true); };
+            const onCancel = () => { cleanup(); resolve(false); };
+            const onOverlay = (e) => {
+                if (e.target === deleteOverlay) onCancel();
+            };
+
+            deleteConfirm.addEventListener('click', onConfirm);
+            deleteCancel.addEventListener('click', onCancel);
+            deleteOverlay.addEventListener('click', onOverlay);
+        });
+    };
+
     if (btnDeleteAll) {
-        btnDeleteAll.addEventListener('click', () => {
+        btnDeleteAll.addEventListener('click', async () => {
             if (tasks.length === 0) {
                 alert("No hay tareas para eliminar.");
                 return;
             }
-            if (confirm("¿Estás seguro de que deseas eliminar TODAS las tareas? Esta acción no se puede deshacer.")) {
+            
+            const confirmed = await openDeleteModal();
+            
+            if (confirmed) {
                 tasks = [];
                 saveTasks();
                 renderAllTasks();
