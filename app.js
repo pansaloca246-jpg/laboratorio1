@@ -222,6 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Delegación de eventos para la lista
+    list.addEventListener('change', (e) => {
+        if (e.target.matches('.todo-checkbox')) {
+            const li = e.target.closest('.todo-item');
+            if (!li) return;
+            const id = li.dataset.id;
+            toggleTask(id, li);
+        }
+    });
+
     list.addEventListener('click', async (e) => {
         const li = e.target.closest('.todo-item');
         if (!li) return;
@@ -230,7 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const task = tasks.find(t => t.id === id);
 
         if (e.target.matches('.todo-checkbox')) {
-            toggleTask(id, li);
+            // Ya se maneja con 'change', no hacer nada aquí
+            return;
         } else if (e.target.closest('.btn-delete')) {
             deleteTask(id, li);
         } else if (e.target.closest('.btn-edit')) {

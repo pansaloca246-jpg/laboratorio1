@@ -32,8 +32,8 @@
     if (!canvas || !ctx) return; // Fail gracefully if not found
 
     // Scale for crisp pixels
-    canvas.style.width = '128px';
-    canvas.style.height = '128px';
+    canvas.style.width = '192px';
+    canvas.style.height = '192px';
 
     // ── Color Palette ──
     const C = {
@@ -52,7 +52,7 @@
         zzz:      '#4cc9f0',
         sparkle:  '#f4a51c',
     };
-    const P = 4; // Pixel scale
+    const P = 6; // Pixel scale (más grande = perrito más grande)
 
     const drawPx = (x, y, color) => { ctx.fillStyle = color; ctx.fillRect(x * P, y * P, P, P); };
     const drawRect = (x, y, w, h, color) => { ctx.fillStyle = color; ctx.fillRect(x * P, y * P, w * P, h * P); };
@@ -126,6 +126,11 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save();
         if (petState.facing === -1) { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
+        
+        // Centrar y alinear al piso dentro del canvas 
+        // (El perro mide ~90x96px, el canvas es 128x128)
+        ctx.translate(19, 32);
+
         (anims[petState.animation] || drawDogIdle)(petState.frame);
         ctx.restore();
     }

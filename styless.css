@@ -564,7 +564,7 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 260px; /* Aumentado de 200px a 260px */
+    width: 340px; /* Widget más grande */
     z-index: 900;
     border-radius: 12px;
     overflow: hidden;
@@ -632,7 +632,7 @@ body {
 /* Pet stage */
 .pet-stage {
     position: relative;
-    height: 150px; /* Aumentado de 110px a 150px */
+    height: 250px; /* Escenario más grande para el perrito */
     background: linear-gradient(180deg, #0f3460 0%, #16213e 55%, #1a472a 80%, #2d6a4f 100%);
     overflow: hidden;
     cursor: pointer;
@@ -647,8 +647,8 @@ body {
 
 .pet-stage canvas {
     image-rendering: pixelated;
-    width: 128px; /* Aumentado de 96px a 128px */
-    height: 128px;
+    width: 192px; /* Canvas más grande */
+    height: 192px;
     position: relative;
     z-index: 2;
     margin-bottom: 12px;
