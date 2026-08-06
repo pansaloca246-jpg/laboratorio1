@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('todo-input');
     const list = document.getElementById('todo-list');
     const prioritySelector = document.getElementById('priority-selector');
-    const themeToggle = document.getElementById('theme-toggle');
     const taskCounter = document.getElementById('task-counter');
     const filtersContainer = document.getElementById('filters-container');
 
@@ -121,18 +120,22 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Event Listeners
-    // Theme toggle
+    // Theme toggle (Button)
     const applyTheme = (theme) => {
         document.body.dataset.theme = theme; // set on body (which is :root for CSS vars)
-        themeToggle.checked = theme === 'dark';
     };
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     applyTheme(savedTheme);
-    themeToggle.addEventListener('change', () => {
-        const newTheme = themeToggle.checked ? 'dark' : 'light';
-        applyTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-    });
+    
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.body.dataset.theme;
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
 
     // Priority selector (inline dots)
     if (prioritySelector) {
