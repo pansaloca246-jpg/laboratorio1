@@ -197,7 +197,7 @@
     document.addEventListener('pet-task-toggled', (e) => {
         if (e.detail && e.detail.completed) {
             // Al completar tarea, el perro come y se llena
-            doAction('eat', '¡Qué rico! ¡Gracias!', 2500, { h: 25, ha: 10, e: 5 });
+            doAction('eat', '¡Qué rico! ¡Gracias!', 2500, { h: 15, ha: 10, e: 5 });
             widget.classList.add('celebrate');
             setTimeout(() => widget.classList.remove('celebrate'), 600);
         } else {
