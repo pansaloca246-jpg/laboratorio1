@@ -1,3 +1,5 @@
+
+
 // ═══════════════════════════════════════════════
 //  PIXEL PET WIDGET LOGIC
 // ═══════════════════════════════════════════════
@@ -158,6 +160,14 @@
     }
 
     function doAction(anim, text, dur, changes) {
+        // Aplicar cambios de estado inmediatamente para no perderlos si está ocupado
+        if (changes) {
+            if (changes.h) petState.hunger += changes.h;
+            if (changes.ha) petState.happy += changes.ha;
+            if (changes.e) petState.energy += changes.e;
+            updateUI();
+        }
+
         if (petState.busy) return;
         petState.busy = true;
         petState.animation = anim;
@@ -165,9 +175,6 @@
         if (text) speak(text);
         
         setTimeout(() => {
-            if (changes.h) petState.hunger += changes.h;
-            if (changes.ha) petState.happy += changes.ha;
-            if (changes.e) petState.energy += changes.e;
             petState.animation = 'idle';
             petState.busy = false;
             updateUI();
@@ -175,13 +182,10 @@
     }
 
     // ── Intercept Task App Events ──
-    const originalPush = Array.prototype.push;
-    // We hook into the global tasks array updates by wrapping localStorage setItem roughly, 
-    // or listening to form submissions if possible. 
-    // An easier way: monkey-patch the original functions if they were global, but they are scoped.
-    // Instead, we will listen to DOM changes on the todo-list.
+    let isInitialized = false;
     
     const listObserver = new MutationObserver((mutations) => {
+        if (!isInitialized) return; // Ignorar inserciones masivas al cargar la página
         for (const m of mutations) {
             if (m.addedNodes.length > 0) {
                 // Task added (baja el hambre porque hay más trabajo)
@@ -263,9 +267,22 @@
     updateUI();
     requestAnimationFrame(loop);
     
-    // Initial greeting
-    setTimeout(() => {
-        speak('¡Hola! Te ayudaré con tus tareas.');
-    }, 1000);
+    // Initial greeting and initial state calculation
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            // Contar tareas pendientes al cargar la página
+            const pendingTasks = document.querySelectorAll('.todo-item:not(.completed)').length;
+            petState.hunger = Math.max(0, 100 - (pendingTasks * 20));
+            updateUI();
+            
+            isInitialized = true; // Activar el observador a partir de aquí
+            
+            if (pendingTasks > 0) {
+                speak(`¡Hola! Tienes ${pendingTasks} tarea(s) pendiente(s). ¡Tengo hambre!`);
+            } else {
+                speak('¡Hola! Todo al día. ¡Te ayudaré con tus tareas!');
+            }
+        }, 100);
+    });
 
 })();
