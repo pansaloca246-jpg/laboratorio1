@@ -118,18 +118,22 @@ body {
 
 .todo-form {
     display: flex;
-    gap: 1rem;
+    flex-wrap: nowrap;
+    gap: 0.5rem; /* Ajustado para mejor cabida */
     margin-bottom: 2.5rem;
     align-items: center;
     background: rgba(0, 0, 0, 0.2);
     padding: 0.5rem;
     border-radius: 16px;
     border: 1px solid rgba(255,255,255,0.05);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .todo-input {
     flex: 1;
-    padding: 0.85rem 1.25rem;
+    min-width: 0; /* Fundamental para que el input no desborde el flex container */
+    padding: 0.85rem 1rem; /* Padding reducido un poco */
     border: none;
     border-radius: 12px;
     font-size: 1rem;
@@ -151,6 +155,7 @@ body {
     padding-right: 0.5rem;
     border-right: 1px solid rgba(255,255,255,0.1);
     margin-right: 0.5rem;
+    flex-shrink: 0;
 }
 
 .priority-dot {
@@ -183,9 +188,9 @@ body {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
     color: #ffffff;
     border: none;
-    padding: 0.85rem 1.75rem;
+    padding: 0.75rem 1.25rem; /* Reducido para encajar mejor */
     border-radius: var(--radius-md);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -193,6 +198,8 @@ body {
     gap: 0.5rem;
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -202,6 +209,26 @@ body {
 
 .btn-primary:active {
     transform: translateY(1px) scale(0.98);
+}
+
+.task-list-container {
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 0.5rem; /* Espacio para el scrollbar */
+    /* Personalización del scrollbar (opcional) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) transparent;
+}
+
+.task-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+.task-list-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.task-list-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
 }
 
 .todo-list {
