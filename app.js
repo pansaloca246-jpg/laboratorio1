@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Disparar animación de salida
         liElement.classList.add('deleting');
         
-        // Esperar a que termine la transición CSS para eliminar del DOM y estado
-        liElement.addEventListener('transitionend', () => {
+        // Esperar a que termine la animación CSS para eliminar del DOM y estado
+        liElement.addEventListener('animationend', () => {
             tasks = tasks.filter(t => t.id !== id);
             saveTasks();
             liElement.remove();
@@ -219,7 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newText !== null && newText.length > 0) {
                 task.text = newText;
                 saveTasks();
-                renderAllTasks();
+                // Actualizar solo el nodo del texto para no disparar reacciones de la mascota
+                li.querySelector('.todo-text').textContent = newText;
             }
         }
     });
