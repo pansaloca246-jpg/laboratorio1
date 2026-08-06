@@ -182,6 +182,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const btnDeleteAll = document.getElementById('btn-delete-all');
+    if (btnDeleteAll) {
+        btnDeleteAll.addEventListener('click', () => {
+            if (tasks.length === 0) {
+                alert("No hay tareas para eliminar.");
+                return;
+            }
+            if (confirm("¿Estás seguro de que deseas eliminar TODAS las tareas? Esta acción no se puede deshacer.")) {
+                tasks = [];
+                saveTasks();
+                renderAllTasks();
+                updateTaskCounter();
+                // Notificar al perrito que todas las tareas se eliminaron
+                document.dispatchEvent(new CustomEvent('pet-task-deleted')); 
+            }
+        });
+    }
+
     // ── Custom Edit Modal Logic ──
     const editOverlay = document.getElementById('edit-modal-overlay');
     const editInput = document.getElementById('edit-modal-input');
