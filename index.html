@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas Premium</title>
+    <link rel="stylesheet" href="styless.css">
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Pixel font for pet -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body data-theme="dark">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <main class="premium-card">
+        <header class="premium-header">
+            <h1 class="title">
+                <svg class="icon-check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Mis Tareas
+            </h1>
+            <div class="header-controls">
+                <span id="task-counter" class="task-counter">Tareas Totales: 0</span>
+                <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Modo oscuro/claro">
+                    <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.79C20.71 12.86 20.42 12.9 20.13 12.9C15.55 12.9 12 9.35 12 4.77C12 4.48 12.04 4.19 12.11 3.9C7.57 4.71 4 8.64 4 13.33C4 18.45 8.05 22.5 13.17 22.5C17.86 22.5 21.79 18.93 22.6 14.39C22.31 14.46 22.02 14.5 21.73 14.5C21.22 14.5 20.73 14.43 20.26 14.3C20.73 13.86 21.12 13.33 21.41 12.73C21.28 12.75 21.14 12.77 21 12.79Z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <nav class="filters-container" id="filters-container">
+            <button class="filter-btn active" data-filter="todas">Todas</button>
+            <button class="filter-btn" data-filter="baja">Baja</button>
+            <button class="filter-btn" data-filter="media">Media</button>
+            <button class="filter-btn" data-filter="alta">Alta</button>
+        </nav>
+        <form id="todo-form" class="todo-form">
+            <input 
+                type="text" 
+                id="todo-input" 
+                class="todo-input" 
+                placeholder="¿Qué necesitas hacer?" 
+                aria-label="Nueva tarea" 
+                required 
+                autocomplete="off"
+            >
+            <div class="priority-selector" id="priority-selector" aria-label="Seleccionar prioridad">
+                <button type="button" class="priority-dot dot-baja" data-value="baja" aria-label="Prioridad Baja" title="Baja"></button>
+                <button type="button" class="priority-dot dot-media active" data-value="media" aria-label="Prioridad Media" title="Media"></button>
+                <button type="button" class="priority-dot dot-alta" data-value="alta" aria-label="Prioridad Alta" title="Alta"></button>
+            </div>
+            <button type="submit" class="btn-primary" aria-label="Agregar tarea">
+                <svg class="icon-plus" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Agregar Tarea</span>
+            </button>
+        </form>
+        <div class="task-list-container">
+            <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
+        </div>
+        <div class="actions-container">
+            <button id="btn-delete-all" class="btn-delete-all">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                Eliminar Todas las Tareas
+            </button>
+        </div>
+    </main>
+
+    <!-- ═══ Pixel Pet Widget ═══ -->
+    <div id="pet-widget" class="pet-widget">
+        <div class="pet-widget-header" id="pet-widget-toggle">
+            <span class="pet-widget-title">🐕 Pixel Pup</span>
+            <span class="pet-widget-mood" id="pet-mood-icon">😊</span>
+        </div>
+        <div class="pet-widget-body" id="pet-widget-body">
+            <div class="pet-stage" id="pet-stage">
+                <canvas id="pet-canvas" width="128" height="128"></canvas>
+                <div class="pet-ground"></div>
+            </div>
+            <div class="pet-stats">
+                <div class="pet-stat-row">
+                    <span class="pet-stat-icon">🍖</span>
+                    <div class="pet-stat-track"><div class="pet-stat-fill pet-hunger" id="pet-hunger"></div></div>
+                </div>
+                <div class="pet-stat-row">
+                    <span class="pet-stat-icon">💛</span>
+                    <div class="pet-stat-track"><div class="pet-stat-fill pet-happy" id="pet-happy"></div></div>
+                </div>
+                <div class="pet-stat-row">
+                    <span class="pet-stat-icon">⚡</span>
+                    <div class="pet-stat-track"><div class="pet-stat-fill pet-energy" id="pet-energy"></div></div>
+                </div>
+            </div>
+            <div class="pet-speech" id="pet-speech"></div>
+        </div>
+    </div>
+
+    <!-- Custom Edit Modal -->
+    <div id="edit-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Editar Tarea</h2>
+            </div>
+            <input type="text" id="edit-modal-input" class="modal-input" placeholder="Nombre de la tarea" autocomplete="off" />
+            <div class="modal-actions">
+                <button id="edit-modal-cancel" class="modal-btn modal-btn-cancel">Cancelar</button>
+                <button id="edit-modal-confirm" class="modal-btn modal-btn-confirm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Delete Confirm Modal -->
+    <div id="delete-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header" style="color: #ef4444;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Eliminar Todo</h2>
+            </div>
+            <p style="margin: 1rem 0; color: var(--text-secondary); text-align: center; font-size: 0.95rem;">
+                ¿Estás seguro de que deseas eliminar TODAS las tareas?<br>Esta acción no se puede deshacer.
+            </p>
+            <div class="modal-actions">
+                <button id="delete-modal-cancel" class="modal-btn modal-btn-cancel">Cancelar</button>
+                <button id="delete-modal-confirm" class="modal-btn" style="background: #ef4444; color: white;">
+                    Sí, eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="pet.js"></script>
+</body>
+</html>
