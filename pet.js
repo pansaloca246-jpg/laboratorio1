@@ -181,42 +181,32 @@
         }, dur);
     }
 
-    // ── Intercept Task App Events ──
-    let isInitialized = false;
-    
-    const listObserver = new MutationObserver((mutations) => {
-        if (!isInitialized) return; // Ignorar inserciones masivas al cargar la página
-        for (const m of mutations) {
-            if (m.addedNodes.length > 0) {
-                // Task added (baja el hambre porque hay más trabajo)
-                doAction('jump', '¡Nueva tarea! ¡Guau!', 2000, { ha: 10, e: -5, h: -20 });
-                widget.classList.add('celebrate');
-                setTimeout(() => widget.classList.remove('celebrate'), 600);
-            }
-            if (m.removedNodes.length > 0) {
-                // Task removed (might be deletion)
-                doAction('eat', '¡Tarea eliminada! Ñam.', 1500, { h: 15, ha: 5 });
-            }
+    // ── Escuchar eventos de tareas desde app.js ──
+    document.addEventListener('pet-task-added', () => {
+        doAction('jump', '¡Nueva tarea! ¡Guau!', 2000, { ha: 10, e: -5, h: -20 });
+        widget.classList.add('celebrate');
+        setTimeout(() => widget.classList.remove('celebrate'), 600);
+    });
+
+    document.addEventListener('pet-task-deleted', () => {
+        doAction('jump', '¡Oh no! Se fue una tarea...', 1500, { h: -20, ha: -5 });
+        widget.classList.add('shake');
+        setTimeout(() => widget.classList.remove('shake'), 400);
+    });
+
+    document.addEventListener('pet-task-toggled', (e) => {
+        if (e.detail && e.detail.completed) {
+            // Al completar tarea, el perro come y se llena
+            doAction('eat', '¡Qué rico! ¡Gracias!', 2500, { h: 25, ha: 10, e: 5 });
+            widget.classList.add('celebrate');
+            setTimeout(() => widget.classList.remove('celebrate'), 600);
+        } else {
+            // Al desmarcar tarea, la comida baja (la tarea vuelve a estar pendiente)
+            doAction('jump', '¡Oh no! Aún falta...', 2000, { h: -15, ha: -5 });
+            widget.classList.add('shake');
+            setTimeout(() => widget.classList.remove('shake'), 400);
         }
     });
-    
-    const todoList = document.getElementById('todo-list');
-    if (todoList) {
-        listObserver.observe(todoList, { childList: true });
-        // Listen for completions via click on the list
-        todoList.addEventListener('click', (e) => {
-            if (e.target.matches('.todo-checkbox')) {
-                if (e.target.checked) {
-                    // Al completar tarea, el perro come y se llena
-                    doAction('eat', '¡Qué rico! ¡Gracias!', 2500, { h: 25, ha: 10, e: 5 });
-                    widget.classList.add('shake');
-                    setTimeout(() => widget.classList.remove('shake'), 400);
-                } else {
-                    speak("Oh, aún no...", 2000);
-                }
-            }
-        });
-    }
 
     // Toggle widget collapse
     header.addEventListener('click', () => {
@@ -248,7 +238,7 @@
             petState.frame++;
             render();
             
-            // Passive drain (slowed down for widget, hunger does NOT drain automatically anymore)
+            // Passive drain
             if (!petState.busy && petState.frame % 15 === 0) {
                 petState.happy -= 0.5;
                 petState.energy -= 0.5;
@@ -267,22 +257,18 @@
     updateUI();
     requestAnimationFrame(loop);
     
-    // Initial greeting and initial state calculation
-    window.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-            // Contar tareas pendientes al cargar la página
-            const pendingTasks = document.querySelectorAll('.todo-item:not(.completed)').length;
-            petState.hunger = Math.max(0, 100 - (pendingTasks * 20));
-            updateUI();
-            
-            isInitialized = true; // Activar el observador a partir de aquí
-            
-            if (pendingTasks > 0) {
-                speak(`¡Hola! Tienes ${pendingTasks} tarea(s) pendiente(s). ¡Tengo hambre!`);
-            } else {
-                speak('¡Hola! Todo al día. ¡Te ayudaré con tus tareas!');
-            }
-        }, 100);
-    });
+    // Inicialización: calcular estado según tareas pendientes
+    setTimeout(() => {
+        const pendingTasks = document.querySelectorAll('.todo-item:not(.completed)').length;
+        petState.hunger = Math.max(0, 100 - (pendingTasks * 20));
+        updateUI();
+        
+        if (pendingTasks > 0) {
+            speak(`¡Hola! Tienes ${pendingTasks} tarea(s) pendiente(s). ¡Tengo hambre!`);
+        } else {
+            speak('¡Hola! Todo al día. ¡Te ayudaré con tus tareas!');
+        }
+    }, 300);
 
 })();
+

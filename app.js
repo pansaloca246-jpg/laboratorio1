@@ -77,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         saveTasks();
         renderTask(newTask);
         updateTaskCounter();
+        // Notificar al pet widget
+        document.dispatchEvent(new CustomEvent('pet-task-added'));
     };
 
     const toggleTask = (id, liElement) => {
@@ -85,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tasks[taskIndex].completed = !tasks[taskIndex].completed;
             saveTasks();
             liElement.classList.toggle('completed');
+            // Notificar al pet widget
+            document.dispatchEvent(new CustomEvent('pet-task-toggled', {
+                detail: { completed: tasks[taskIndex].completed }
+            }));
         }
     };
 
@@ -98,7 +104,20 @@ document.addEventListener('DOMContentLoaded', () => {
             saveTasks();
             liElement.remove();
             updateTaskCounter();
+            // Notificar al pet widget
+            document.dispatchEvent(new CustomEvent('pet-task-deleted'));
         }, { once: true });
+
+        // Fallback: si la animación no se dispara en 600ms, eliminar de todos modos
+        setTimeout(() => {
+            if (liElement.parentNode) {
+                tasks = tasks.filter(t => t.id !== id);
+                saveTasks();
+                liElement.remove();
+                updateTaskCounter();
+                document.dispatchEvent(new CustomEvent('pet-task-deleted'));
+            }
+        }, 600);
     };
 
     // Event Listeners
